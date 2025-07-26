@@ -29,3 +29,14 @@
 .links a:hover {
   opacity: 0.7;
 }
+
+.lang-selector {
+  margin-left: 1.2rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.3rem;
+  border: 1px solid #fff2;
+  background: #fff4;
+  color: #fff;
+  font-weight: 600;
+  outline: none;
+}

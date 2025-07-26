@@ -1,0 +1,14 @@
+{
+  "APP": {
+    "TITLE": "Smart Knowledge Base",
+    "BROWSE_FAQS": "Browse FAQs",
+    "AI_SEARCH": "AI Search",
+    "ASK": "Ask",
+    "PROFILE": "Profile",
+    "ADMIN": "Admin",
+    "SETTINGS": "Settings",
+    "LOGIN": "Login",
+    "LOGOUT": "Logout",
+    "LANGUAGE": "Language"
+  }
+}
