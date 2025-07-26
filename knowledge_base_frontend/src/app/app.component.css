@@ -2,17 +2,26 @@
   display: flex;
   flex-direction: row;
   min-height: 100vh;
+  background: #f8fafb;
 }
 
 .sidebar {
-  width: 240px;
+  width: 242px;
   background: #f7f8fa;
   border-right: 1px solid #eee;
 }
 
 .content {
   flex: 1 1 0%;
-  padding: 2rem;
+  padding: 2.3rem 2.3rem 2rem 2.3rem;
   background: #fff;
   min-width: 0;
+  border-radius: 0.7rem;
+  margin: 1.2rem 0.5rem 1.2rem 0.5rem;
+  box-shadow: 0 2px 8px #19335706;
+}
+
+.content:focus {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
 }

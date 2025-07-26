@@ -1,18 +1,26 @@
-<nav class="navbar">
-  <a routerLink="/" class="logo">{{ 'APP.TITLE' | translate }}</a>
-  <div class="links">
-    <a routerLink="/faq">{{ 'APP.BROWSE_FAQS' | translate }}</a>
-    <a routerLink="/search">{{ 'APP.AI_SEARCH' | translate }}</a>
-    <a routerLink="/ask" *ngIf="isLoggedIn">{{ 'APP.ASK' | translate }}</a>
-    <a routerLink="/profile" *ngIf="isLoggedIn">{{ 'APP.PROFILE' | translate }}</a>
-    <a routerLink="/admin" *ngIf="isAdmin">{{ 'APP.ADMIN' | translate }}</a>
-    <a routerLink="/settings">{{ 'APP.SETTINGS' | translate }}</a>
-    <a routerLink="/login" *ngIf="!isLoggedIn">{{ 'APP.LOGIN' | translate }}</a>
-    <a (click)="logout()" *ngIf="isLoggedIn" style="cursor:pointer;">{{ 'APP.LOGOUT' | translate }}</a>
-    <!-- Language Selector Dropdown -->
-    <select class="lang-selector" [(ngModel)]="selLang" (change)="changeLang(selLang)" aria-label="Language">
-      <option value="en">EN</option>
-      <option value="es">ES</option>
-    </select>
+<nav class="navbar" role="navigation" aria-label="Main Navigation">
+  <a routerLink="/" class="logo" tabindex="0" aria-label="Home">{{ 'APP.TITLE' | translate }}</a>
+  <div class="links" role="menubar">
+    <a routerLink="/faq" role="menuitem" tabindex="0" matTooltip="Browse frequently asked questions" aria-label="Browse FAQs">{{ 'APP.BROWSE_FAQS' | translate }}</a>
+    <a routerLink="/search" role="menuitem" tabindex="0" matTooltip="AI-assisted search" aria-label="AI Search">{{ 'APP.AI_SEARCH' | translate }}</a>
+    <a routerLink="/ask" *ngIf="isLoggedIn" role="menuitem" tabindex="0" matTooltip="Ask a new question" aria-label="Ask">{{ 'APP.ASK' | translate }}</a>
+    <a routerLink="/profile" *ngIf="isLoggedIn" role="menuitem" tabindex="0" matTooltip="View your profile" aria-label="Profile">{{ 'APP.PROFILE' | translate }}</a>
+    <a routerLink="/admin" *ngIf="isAdmin" role="menuitem" tabindex="0" matTooltip="Admin dashboard" aria-label="Admin">{{ 'APP.ADMIN' | translate }}</a>
+    <a routerLink="/settings" role="menuitem" tabindex="0" matTooltip="Settings and theme" aria-label="Settings">{{ 'APP.SETTINGS' | translate }}</a>
+    <a routerLink="/login" *ngIf="!isLoggedIn" role="menuitem" tabindex="0" matTooltip="Sign in" aria-label="Login">{{ 'APP.LOGIN' | translate }}</a>
+    <a (click)="logout()" *ngIf="isLoggedIn" style="cursor:pointer;" role="menuitem" tabindex="0" matTooltip="Logout" aria-label="Logout">{{ 'APP.LOGOUT' | translate }}</a>
+    <label for="lang-selector" style="margin-left: 1.2rem;display: flex;align-items: center;">
+      <span class="sr-only">{{ 'APP.LANGUAGE' | translate }}</span>
+      <select
+        class="lang-selector"
+        id="lang-selector"
+        [(ngModel)]="selLang"
+        (change)="changeLang(selLang)"
+        aria-label="Language"
+      >
+        <option value="en">EN</option>
+        <option value="es">ES</option>
+      </select>
+    </label>
   </div>
 </nav>

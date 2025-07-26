@@ -1,11 +1,25 @@
-<aside class="sidebar-container">
+<aside class="sidebar-container" aria-label="Category Filter" tabindex="0">
   <h3>Categories</h3>
   <ul>
     <li>
-      <a (click)="filterBy('All')" [style.fontWeight]="selected === 'All' ? 'bold' : 'normal'">All</a>
+      <a
+        (click)="filterBy('All')"
+        [attr.aria-current]="selected === 'All' ? 'page' : null"
+        [class.selected]="selected === 'All'"
+        tabindex="0"
+        role="button"
+        aria-label="Show all FAQs"
+        >All</a>
     </li>
     <li *ngFor="let cat of categories">
-      <a (click)="filterBy(cat)" [style.fontWeight]="selected === cat ? 'bold' : 'normal'">{{cat}}</a>
+      <a
+        (click)="filterBy(cat)"
+        [attr.aria-current]="selected === cat ? 'page' : null"
+        [class.selected]="selected === cat"
+        tabindex="0"
+        role="button"
+        [attr.aria-label]="'Show only category: ' + cat"
+        >{{cat}}</a>
     </li>
   </ul>
 </aside>
