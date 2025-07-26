@@ -1,4 +1,3 @@
-/* global setTimeout */
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
@@ -6,8 +5,9 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-// Import jsPDF via dynamic import, as Angular SSR environments may not have window.
-// We'll use a button UI enhancement as well.
+/**
+ * FAQ Detail Page - With Export PDF, Edit/Delete (Admin), and Copy Shareable Link feature.
+ */
 @Component({
   selector: 'app-faq-detail',
   standalone: true,
@@ -18,11 +18,18 @@ import { FormsModule } from '@angular/forms';
       <h3>{{faq.title}}</h3>
       <span *ngIf="faq.category" style="color:gray;">[{{faq.category}}]</span>
       <p>{{faq.answer}}</p>
-      <div style="display: flex; gap: 0.5em; align-items: center; margin-bottom: 1em;">
+      <div style="display: flex; gap: 0.7em; align-items: center; margin-bottom: 1em;">
         <button (click)="exportPdf()" style="background:#1976d2;color:white;border:none;padding:0.5em 1em;border-radius:4px;font-weight:500;cursor:pointer;">
           <span style="vertical-align:middle;">&#128196;</span> Export PDF
         </button>
         <span *ngIf="pdfSuccess" style="color:green;font-size:0.95em;">PDF downloaded!</span>
+        <button (click)="copyFaqLink()" style="background:#ffca28;color:#222;border:none;padding:0.5em 1em;border-radius:4px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:0.4em;"
+          [attr.aria-label]="'Copy shareable link'">
+          <span style="vertical-align:middle;">🔗</span>
+          Copy Shareable Link
+        </button>
+        <!-- Snack-bar / Toast Feedback -->
+        <span *ngIf="copySuccess" style="background:#424242;color:#fff;border-radius:16px;padding:0.25em 1em;font-size:0.95em;margin-left:0.8em;">Link copied!</span>
       </div>
       <span *ngIf="isAdmin">
         <button (click)="editMode=true">Edit</button>
@@ -46,6 +53,7 @@ export class FaqDetailComponent {
   editMode = false;
   isAdmin = false;
   pdfSuccess = false;
+  copySuccess = false;
 
   constructor(
     route: ActivatedRoute,
@@ -73,6 +81,62 @@ export class FaqDetailComponent {
           globalThis.location.href = '/faq';
         }
       });
+    }
+  }
+
+  // PUBLIC_INTERFACE
+  /**
+   * Copies the canonical shareable FAQ detail link to the user's clipboard,
+   * and shows a feedback toast.
+   */
+  copyFaqLink() {
+    if (typeof globalThis === 'undefined' || !globalThis.location) return;
+
+    // Construct canonical URL: e.g., https://host/faq/:id
+    let loc = globalThis.location;
+    let base =
+      loc.origin ||
+      (loc.protocol && loc.host ? `${loc.protocol}//${loc.host}` : '');
+    let url = `${base}/faq/${this.faqId}`;
+
+    // Try using Clipboard API, fallback to execCommand
+    let didCopy = false;
+    if ('clipboard' in globalThis.navigator && typeof globalThis.navigator.clipboard.writeText === 'function') {
+      globalThis.navigator.clipboard.writeText(url).then(() => {
+        this._showCopiedToast();
+      }).catch(() => {
+        this._fallbackCopy(url);
+      });
+      didCopy = true;
+    }
+
+    if (!didCopy) {
+      this._fallbackCopy(url);
+    }
+  }
+
+  /** Fallback: Uses old execCommand if available. */
+  private _fallbackCopy(text: string) {
+    try {
+      const temp = globalThis.document.createElement('input');
+      temp.style.position = 'fixed';
+      temp.style.opacity = '0';
+      temp.value = text;
+      globalThis.document.body.appendChild(temp);
+      temp.select();
+      globalThis.document.execCommand('copy');
+      globalThis.document.body.removeChild(temp);
+      this._showCopiedToast();
+    } catch {
+      // Silently handle
+    }
+  }
+
+  /** Shows the copy link feedback message for 1.5 seconds. */
+  private _showCopiedToast() {
+    this.copySuccess = true;
+    if (typeof globalThis !== 'undefined' && typeof globalThis.setTimeout === 'function') {
+      globalThis.setTimeout(() => (this.copySuccess = false), 1500);
     }
   }
 
@@ -110,6 +174,8 @@ export class FaqDetailComponent {
 
     // UI feedback
     this.pdfSuccess = true;
-    setTimeout(() => (this.pdfSuccess = false), 1200);
+    if (typeof globalThis !== 'undefined' && typeof globalThis.setTimeout === 'function') {
+      globalThis.setTimeout(() => (this.pdfSuccess = false), 1200);
+    }
   }
 }
