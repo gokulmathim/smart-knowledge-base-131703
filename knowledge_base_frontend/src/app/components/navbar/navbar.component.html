@@ -1,13 +1,26 @@
-<nav class="navbar">
-  <a routerLink="/" class="logo">SmartKB</a>
-  <div class="links">
-    <a routerLink="/faq">Browse FAQs</a>
-    <a routerLink="/search">AI Search</a>
-    <a routerLink="/ask" *ngIf="isLoggedIn">Ask</a>
-    <a routerLink="/profile" *ngIf="isLoggedIn">Profile</a>
-    <a routerLink="/admin" *ngIf="isAdmin">Admin</a>
-    <a routerLink="/settings">Settings</a>
-    <a routerLink="/login" *ngIf="!isLoggedIn">Login</a>
-    <a (click)="logout()" *ngIf="isLoggedIn" style="cursor:pointer;">Logout</a>
+<nav class="navbar" role="navigation" aria-label="Main Navigation">
+  <a routerLink="/" class="logo" tabindex="0" aria-label="Home">{{ 'APP.TITLE' | translate }}</a>
+  <div class="links" role="menubar">
+    <a routerLink="/faq" role="menuitem" tabindex="0" matTooltip="Browse frequently asked questions" aria-label="Browse FAQs">{{ 'APP.BROWSE_FAQS' | translate }}</a>
+    <a routerLink="/search" role="menuitem" tabindex="0" matTooltip="AI-assisted search" aria-label="AI Search">{{ 'APP.AI_SEARCH' | translate }}</a>
+    <a routerLink="/ask" *ngIf="isLoggedIn" role="menuitem" tabindex="0" matTooltip="Ask a new question" aria-label="Ask">{{ 'APP.ASK' | translate }}</a>
+    <a routerLink="/profile" *ngIf="isLoggedIn" role="menuitem" tabindex="0" matTooltip="View your profile" aria-label="Profile">{{ 'APP.PROFILE' | translate }}</a>
+    <a routerLink="/admin" *ngIf="isAdmin" role="menuitem" tabindex="0" matTooltip="Admin dashboard" aria-label="Admin">{{ 'APP.ADMIN' | translate }}</a>
+    <a routerLink="/settings" role="menuitem" tabindex="0" matTooltip="Settings and theme" aria-label="Settings">{{ 'APP.SETTINGS' | translate }}</a>
+    <a routerLink="/login" *ngIf="!isLoggedIn" role="menuitem" tabindex="0" matTooltip="Sign in" aria-label="Login">{{ 'APP.LOGIN' | translate }}</a>
+    <a (click)="logout()" *ngIf="isLoggedIn" style="cursor:pointer;" role="menuitem" tabindex="0" matTooltip="Logout" aria-label="Logout">{{ 'APP.LOGOUT' | translate }}</a>
+    <label for="lang-selector" style="margin-left: 1.2rem;display: flex;align-items: center;">
+      <span class="sr-only">{{ 'APP.LANGUAGE' | translate }}</span>
+      <select
+        class="lang-selector"
+        id="lang-selector"
+        [(ngModel)]="selLang"
+        (change)="changeLang(selLang)"
+        aria-label="Language"
+      >
+        <option value="en">EN</option>
+        <option value="es">ES</option>
+      </select>
+    </label>
   </div>
 </nav>

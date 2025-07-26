@@ -1,9 +1,15 @@
 .sidebar-container {
-  padding: 2rem 1rem;
-  font-size: 1rem;
+  padding: 2.25rem 1.2rem 2rem 1.2rem;
+  font-size: 1.04rem;
+  background: transparent;
+  min-height: 100%;
 }
 .sidebar-container h3 {
-  margin-bottom: 1rem;
+  margin-bottom: 1.1rem;
+  font-size: 1.1em;
+  color: #1976d2;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 .sidebar-container ul {
   list-style: none;
@@ -11,12 +17,29 @@
   margin: 0;
 }
 .sidebar-container li {
-  margin: 0.5rem 0;
+  margin: 0.55rem 0;
 }
 .sidebar-container a {
-  color: #424242;
+  color: #222b3a;
   text-decoration: none;
+  background: none;
+  border-radius: 0.2rem;
+  padding: 0.17em 0.45em;
+  display: inline-block;
+  transition: background 0.18s, color 0.18s;
+  outline: none;
+}
+.sidebar-container a.selected,
+.sidebar-container a:focus {
+  background: #f0f4fa;
+  color: #1976d2;
+  font-weight: 700;
+  text-decoration: underline;
+  outline: 2px solid #1976d2;
+  outline-offset: 1px;
 }
 .sidebar-container a:hover {
+  background: #e3eaed;
+  color: #1565b0;
   text-decoration: underline;
 }

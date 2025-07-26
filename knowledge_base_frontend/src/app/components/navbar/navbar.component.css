@@ -2,30 +2,62 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 58px;
+  height: 62px;
   background: #1976d2;
   color: white;
-  padding: 0 2rem;
+  padding: 0 2.5rem 0 2rem;
+  border-bottom: 1px solid #eee3;
 }
 
 .logo {
-  font-weight: bold;
-  font-size: 1.2rem;
+  font-weight: 700;
+  font-size: 1.22rem;
   color: white;
   text-decoration: none;
+  letter-spacing: 0.03em;
 }
 
 .links {
   display: flex;
-  gap: 1.2rem;
+  gap: 1.25rem;
+  align-items: center;
 }
 
-.links a {
+.links a,
+.links [role="menuitem"] {
   color: white;
   text-decoration: none;
-  transition: opacity 0.2s;
+  transition: opacity 0.18s, background-color 0.18s;
+  border-radius: 0.25rem;
+  padding: 0.25em 0.7em;
+  outline: none;
+}
+.links a:hover,
+.links a:focus,
+.links [role="menuitem"]:focus {
+  opacity: 0.82;
+  background: #fff2;
 }
 
-.links a:hover {
-  opacity: 0.7;
+.lang-selector {
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 0.3rem;
+  border: 1px solid #fff2;
+  background: #fff4;
+  color: #fff;
+  font-weight: 600;
+  outline: none;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }

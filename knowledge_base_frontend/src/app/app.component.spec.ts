@@ -20,10 +20,17 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('angular');
   });
 
-  it('should render title', () => {
+  it('should render the navbar and layout root', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, angular');
+    // Check for navbar
+    expect(compiled.querySelector('app-navbar')).toBeTruthy();
+    // Check for sidebar
+    expect(compiled.querySelector('app-sidebar')).toBeTruthy();
+    // Check for theme toggle
+    expect(compiled.querySelector('app-theme-toggle')).toBeTruthy();
+    // Check for layout root
+    expect(compiled.querySelector('.layout-root')).toBeTruthy();
   });
 });

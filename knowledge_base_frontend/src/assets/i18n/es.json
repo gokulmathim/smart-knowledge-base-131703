@@ -1,0 +1,14 @@
+{
+  "APP": {
+    "TITLE": "Base de Conocimientos Inteligente",
+    "BROWSE_FAQS": "Explorar FAQs",
+    "AI_SEARCH": "Búsqueda AI",
+    "ASK": "Preguntar",
+    "PROFILE": "Perfil",
+    "ADMIN": "Admin",
+    "SETTINGS": "Ajustes",
+    "LOGIN": "Iniciar sesión",
+    "LOGOUT": "Cerrar sesión",
+    "LANGUAGE": "Idioma"
+  }
+}

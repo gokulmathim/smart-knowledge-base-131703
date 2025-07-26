@@ -5,8 +5,15 @@ import { Component } from '@angular/core';
   standalone: true,
   styleUrl: './theme-toggle.component.css',
   template: `
-  <button (click)="toggle()" class="theme-btn" title="Toggle theme">
-    <span>{{ theme === 'light' ? '🌞' : '🌙' }}</span>
+  <button
+    (click)="toggle()"
+    class="theme-btn"
+    title="Toggle light/dark theme"
+    aria-label="Toggle Light or Dark Theme"
+    tabindex="0"
+    type="button"
+    >
+    <span aria-hidden="true">{{ theme === 'light' ? '🌞' : '🌙' }}</span>
   </button>
   `
 })

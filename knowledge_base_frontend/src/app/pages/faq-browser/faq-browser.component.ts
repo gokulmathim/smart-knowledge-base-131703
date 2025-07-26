@@ -10,29 +10,65 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <h2>Browse FAQs</h2>
-    <input type="text" [(ngModel)]="searchTerm" placeholder="Search FAQs..." (input)="doSearch()" />
-    <button *ngIf="isAdmin" (click)="mode='create'">Add FAQ</button>
-    <ul>
-      <li *ngFor="let faq of filteredFaqs">
-        <strong (click)="viewFaq(faq.id)" style="cursor:pointer;">{{faq.title}}</strong>
-        <span *ngIf="faq.category" style="color:gray;"> [{{faq.category}}]</span>
-        <span *ngIf="isAdmin">
-          <button (click)="editFaq(faq)">Edit</button>
-          <button (click)="deleteFaq(faq.id)">Delete</button>
-        </span>
-      </li>
-    </ul>
-    <div *ngIf="mode==='edit' || mode==='create'">
-      <h3>{{mode==='edit' ? 'Edit FAQ' : 'Create FAQ'}}</h3>
-      <form (ngSubmit)="saveFaq()">
-        <label>Title: <input [(ngModel)]="editFaqData.title" name="title" required></label><br>
-        <label>Category: <input [(ngModel)]="editFaqData.category" name="category"></label><br>
-        <textarea [(ngModel)]="editFaqData.answer" name="answer" rows="4" required placeholder="Answer"></textarea><br>
-        <button type="submit">Save</button>
-        <button type="button" (click)="mode=''">Cancel</button>
-      </form>
-    </div>
+    <section aria-label="FAQ Browser">
+      <h2 style="margin-bottom:1.2rem;">Browse FAQs</h2>
+      <div style="display:flex; gap:0.8rem; align-items:center; margin-bottom:1rem;">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="Search FAQs..."
+          (input)="doSearch()"
+          aria-label="Search FAQs"
+          style="padding:0.45em 1em; border-radius:0.32rem; border:1px solid #ddd; flex:1;"
+        />
+        <button
+          *ngIf="isAdmin"
+          (click)="mode='create'"
+          aria-label="Add a new FAQ"
+          style="background:#ffca28; color:#222; border:none; font-weight:600; border-radius:0.35rem; padding:0.4em 1.1em; cursor:pointer;"
+        >Add FAQ</button>
+      </div>
+      <ul style="margin-top:1.1rem; margin-bottom:1.7rem; padding-left:0;">
+        <li *ngFor="let faq of filteredFaqs" style="margin-bottom:0.9rem;list-style:none;">
+          <strong
+            (click)="viewFaq(faq.id)"
+            tabindex="0"
+            style="cursor:pointer; font-size:1.05em; color:#1976d2;"
+            role="link"
+            [attr.aria-label]="'View FAQ: ' + faq.title"
+            (keyup.enter)="viewFaq(faq.id)"
+          >{{faq.title}}</strong>
+          <span *ngIf="faq.category" style="color:gray;"> [{{faq.category}}]</span>
+          <span *ngIf="isAdmin" style="margin-left:1rem;">
+            <button
+              (click)="editFaq(faq)"
+              aria-label="Edit this FAQ"
+              title="Edit"
+              style="margin-right:0.18em; border-radius:0.29em; border:none; background:#daeaff; color:#222; padding:0.23em 0.9em; font-size:inherit; cursor:pointer;"
+              >Edit</button>
+            <button
+              (click)="deleteFaq(faq.id)"
+              aria-label="Delete this FAQ"
+              title="Delete"
+              style="border-radius:0.29em; border:none; background:#ffdfe0; color:#880018; padding:0.23em 0.9em; font-size:inherit; cursor:pointer;"
+              >Delete</button>
+          </span>
+        </li>
+      </ul>
+      <div *ngIf="mode==='edit' || mode==='create'" style="margin-top:2.2rem;">
+        <h3 style="margin-bottom:1.2em;">{{mode==='edit' ? 'Edit FAQ' : 'Create FAQ'}}</h3>
+        <form (ngSubmit)="saveFaq()" autocomplete="off">
+          <label for="faq-title">Title:</label>
+          <input [(ngModel)]="editFaqData.title" id="faq-title" name="title" required style="margin-bottom:0.6em;width:60%;"><br>
+          <label for="faq-cat">Category:</label>
+          <input [(ngModel)]="editFaqData.category" id="faq-cat" name="category" style="margin-bottom:0.6em;width:50%;"><br>
+          <label for="faq-answer">Answer:</label><br>
+          <textarea [(ngModel)]="editFaqData.answer" id="faq-answer" name="answer" rows="4" required placeholder="Answer" style="width:90%;"></textarea><br>
+          <button type="submit" style="background:#1976d2; color:#fff; font-weight:600; padding:0.28em 1.1em; border:none; border-radius:0.32rem; margin-right:0.8em;">Save</button>
+          <button type="button" (click)="mode=''" style="background:#f0f3f9; color:#1976d2; border:none; border-radius:0.32rem; padding:0.28em 1.1em;">Cancel</button>
+        </form>
+      </div>
+    </section>
   `
 })
 export class FaqBrowserComponent {
