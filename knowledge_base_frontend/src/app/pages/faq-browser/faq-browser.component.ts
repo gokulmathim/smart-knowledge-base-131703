@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -43,32 +43,44 @@ export class FaqBrowserComponent {
   isAdmin = false;
   searchTerm = '';
 
+  private _apiService: ApiService;
+  private _authService: AuthService;
+  private _route: ActivatedRoute;
+  private _router: Router;
+
   constructor(
-    private apiService: ApiService,
-    private authService: AuthService,
-    private route: ActivatedRoute
+    apiService: ApiService,
+    authService: AuthService,
+    route: ActivatedRoute,
+    router: Router
   ) {
+    this._apiService = apiService;
+    this._authService = authService;
+    this._route = route;
+    this._router = router;
     this.refresh();
-    this.authService.user$.subscribe(u => this.isAdmin = !!u?.isAdmin);
-    this.route.queryParams.subscribe(params => {
+    this._authService.user$.subscribe(u => this.isAdmin = !!u?.isAdmin);
+    // Trigger filtering on route change
+    this._route.queryParams.subscribe(params => {
       this.applyFilter(params['category']);
     });
   }
 
   refresh() {
-    this.apiService.getFaqs().subscribe(res => {
+    this._apiService.getFaqs().subscribe((res: any) => {
       if (Array.isArray(res)) { this.faqs = res; this.applyFilter(); }
     });
   }
   applyFilter(category?: string) {
-    const cat = category || this.route.snapshot.queryParams['category'];
+    const cat = category || this._route.snapshot.queryParams['category'];
     this.filteredFaqs = this.faqs.filter(f=>!cat||cat==='All'||f.category===cat);
-    this.doSearch();
+    this.doSearch(cat ?? undefined);
   }
-  doSearch() {
+  doSearch(categoryOverride?: string) {
     const term = this.searchTerm.toLowerCase();
+    let cat = categoryOverride ?? this._route.snapshot.queryParams['category'];
     this.filteredFaqs = this.faqs.filter(f=>
-      (!this.route.snapshot.queryParams['category'] || this.route.snapshot.queryParams['category']=='All' || f.category==this.route.snapshot.queryParams['category']) &&
+      (!cat || cat==='All' || f.category==cat) &&
       (!this.searchTerm ||
         f.title?.toLowerCase().includes(term) ||
         f.answer?.toLowerCase().includes(term)
@@ -76,9 +88,7 @@ export class FaqBrowserComponent {
     );
   }
   viewFaq(id: number) {
-    if (typeof globalThis !== 'undefined' && globalThis.location) {
-      globalThis.location.href = '/faq/' + id;
-    }
+    this._router.navigate(['/faq', id]);
   }
   editFaq(faq: any) {
     this.mode = 'edit';
@@ -86,14 +96,14 @@ export class FaqBrowserComponent {
   }
   deleteFaq(id: number) {
     if (typeof globalThis !== 'undefined' && globalThis.confirm && globalThis.confirm('Delete this FAQ?')) {
-      this.apiService.deleteFaq(id).subscribe(() => this.refresh());
+      this._apiService.deleteFaq(id).subscribe(() => this.refresh());
     }
   }
   saveFaq() {
     if (this.mode === 'edit') {
-      this.apiService.updateFaq(this.editFaqData.id, this.editFaqData).subscribe(() => { this.mode = ''; this.refresh(); });
+      this._apiService.updateFaq(this.editFaqData.id, this.editFaqData).subscribe(() => { this.mode = ''; this.refresh(); });
     } else {
-      this.apiService.createFaq(this.editFaqData).subscribe(() => { this.mode = ''; this.refresh(); });
+      this._apiService.createFaq(this.editFaqData).subscribe(() => { this.mode = ''; this.refresh(); });
     }
   }
 }

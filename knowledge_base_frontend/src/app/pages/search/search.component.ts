@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
           </li>
         </ul>
       </div>
-      <div *ngIf="results && !results.length">No results.</div>
+      <div *ngIf="results && !results.length && !loading">No results.</div>
     </div>
   `
 })
@@ -29,13 +29,19 @@ export class SearchComponent {
   q = '';
   loading = false;
   results: any[] = [];
-  constructor() {}
+  constructor(apiService: ApiService) {
+    this._apiService = apiService;
+  }
+  private _apiService: ApiService;
   doSearch() {
     if (!this.q) return;
     this.loading = true;
-    ApiService.prototype.search(this.q).subscribe(res => {
-      this.loading = false;
-      this.results = res?.results || [];
-    }, () => { this.loading = false; });
+    this._apiService.search(this.q).subscribe(
+      res => {
+        this.loading = false;
+        this.results = res?.results || [];
+      },
+      () => { this.loading = false; this.results = []; }
+    );
   }
 }

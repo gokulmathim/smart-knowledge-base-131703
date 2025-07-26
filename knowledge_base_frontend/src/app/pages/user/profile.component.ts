@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -24,11 +25,18 @@ export class ProfileComponent {
   user: any = null;
   password = '';
   msg = '';
-  constructor() {
-    AuthService.prototype.user$.subscribe(u => this.user = u);
+  private userSub?: Subscription;
+
+  constructor(authService: AuthService) {
+    this._userSub = authService.user$.subscribe(u => this.user = u);
   }
+  private _userSub?: Subscription;
   changePassword() {
-    // Replace with actual backend call
+    // Replace with actual backend call when implemented properly on backend
     this.msg = 'Password updated (not really, backend not implemented)';
+    this.password = '';
+  }
+  ngOnDestroy() {
+    this._userSub?.unsubscribe();
   }
 }

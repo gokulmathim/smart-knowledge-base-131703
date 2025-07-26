@@ -38,21 +38,27 @@ export class FaqDetailComponent {
   isAdmin = false;
 
   constructor(
-    private route: ActivatedRoute,
-    private apiService: ApiService,
-    private authService: AuthService
+    route: ActivatedRoute,
+    apiService: ApiService,
+    authService: AuthService
   ) {
-    this.faqId = +(this.route.snapshot.paramMap.get('id') || '0');
-    this.apiService.getFaq(this.faqId).subscribe(res => this.faq = res);
-    this.authService.user$.subscribe(u => this.isAdmin = !!u?.isAdmin);
+    this._route = route;
+    this._apiService = apiService;
+    this._authService = authService;
+    this.faqId = +(this._route.snapshot.paramMap.get('id') || '0');
+    this._apiService.getFaq(this.faqId).subscribe(res => this.faq = res);
+    this._authService.user$.subscribe(u => this.isAdmin = !!u?.isAdmin);
   }
+  private _route: ActivatedRoute;
+  private _apiService: ApiService;
+  private _authService: AuthService;
 
   saveFaq() {
-    this.apiService.updateFaq(this.faq.id, this.faq).subscribe(() => this.editMode = false);
+    this._apiService.updateFaq(this.faq.id, this.faq).subscribe(() => this.editMode = false);
   }
   deleteFaq() {
     if (typeof globalThis !== 'undefined' && globalThis.confirm && globalThis.confirm('Delete this FAQ?')) {
-      this.apiService.deleteFaq(this.faq.id).subscribe(() => {
+      this._apiService.deleteFaq(this.faq.id).subscribe(() => {
         if (typeof globalThis !== 'undefined' && globalThis.location) {
           globalThis.location.href = '/faq';
         }

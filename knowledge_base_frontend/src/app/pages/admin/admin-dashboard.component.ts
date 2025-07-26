@@ -19,13 +19,18 @@ import { CommonModule } from '@angular/common';
 })
 export class AdminDashboardComponent {
   faqs: any[] = [];
-  constructor() {
-    ApiService.prototype.getFaqs().subscribe(res => this.faqs = res || []);
+  constructor(apiService: ApiService) {
+    this._apiService = apiService;
+    this.refresh();
+  }
+  private _apiService: ApiService;
+  refresh() {
+    this._apiService.getFaqs().subscribe(res => this.faqs = res || []);
   }
   deleteFaq(id: number) {
     if (typeof globalThis !== 'undefined' && globalThis.confirm && globalThis.confirm('Delete FAQ?')) {
-      ApiService.prototype.deleteFaq(id).subscribe(() => {
-        ApiService.prototype.getFaqs().subscribe(res => this.faqs = res);
+      this._apiService.deleteFaq(id).subscribe(() => {
+        this.refresh();
       });
     }
   }

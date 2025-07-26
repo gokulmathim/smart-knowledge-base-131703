@@ -9,13 +9,14 @@ export class AuthService {
   private readonly tokenKey = 'kb_jwt';
   public user$ = new BehaviorSubject<any>(null);
 
-  constructor(private http: HttpClient) {
-    // Use http here for actual API requests; if not, keep as DI for future use
+  constructor(http: HttpClient) {
+    this.http = http;
     if (typeof globalThis !== 'undefined' && globalThis.localStorage) {
       const saved = globalThis.localStorage.getItem(this.tokenKey);
       if (saved) this.loadProfile().subscribe();
     }
   }
+  private http: HttpClient;
 
   /** PUBLIC_INTERFACE Login user. */
   login(email: string, password: string): Observable<any> {

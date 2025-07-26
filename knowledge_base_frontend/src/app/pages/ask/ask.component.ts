@@ -20,10 +20,20 @@ import { CommonModule } from '@angular/common';
 export class AskComponent {
   question = '';
   msg = '';
-  constructor() {}
+  loading = false;
+  constructor(apiService: ApiService) {
+    this._apiService = apiService;
+  }
+  private _apiService: ApiService;
   submit() {
-    ApiService.prototype.search(this.question).subscribe(
-      () => this.msg = 'Question submitted! (AI search result returned in /search, not here.)'
+    if (!this.question) return;
+    this.loading = true;
+    this._apiService.search(this.question).subscribe(
+      () => {
+        this.msg = 'Question submitted! (AI search result returned in /search, not here.)';
+        this.loading = false;
+      },
+      () => { this.msg = 'Submission failed. Please try again.'; this.loading = false; }
     );
   }
 }

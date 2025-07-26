@@ -22,10 +22,13 @@ export class LoginComponent {
   password = '';
   error: string | null = null;
 
-  constructor() {}
+  constructor(authService: AuthService) {
+    this._authService = authService;
+  }
+  private _authService: AuthService;
   login() {
     this.error = null;
-    AuthService.prototype.login(this.email, this.password).subscribe({
+    this._authService.login(this.email, this.password).subscribe({
       next: () => {
         if (typeof globalThis !== 'undefined' && globalThis.location) {
           globalThis.location.pathname = '/';

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,7 +14,7 @@ export class SidebarComponent {
   categories: string[] = [];
   selected: string = 'All';
 
-  constructor(api: ApiService) {
+  constructor(api: ApiService, router: Router) {
     api.getFaqs().subscribe(res => {
       if (Array.isArray(res)) {
         const cats = new Set<string>();
@@ -21,18 +22,21 @@ export class SidebarComponent {
         this.categories = Array.from(cats);
       }
     });
+    this._router = router;
   }
+  private _router: Router;
+  ngOnInit(): void {
+    // NOTE: Avoid window for SSR; can initialize selection by query parameters using Router!
+  }
+
+
 
   filterBy(cat: string) {
     this.selected = cat;
-    if (typeof globalThis !== 'undefined' && globalThis.location) {
-      globalThis.location.pathname = '/faq';
-      if (cat !== 'All') {
-        globalThis.location.search = `?category=${encodeURIComponent(cat)}`;
-      } else {
-        globalThis.location.search = '';
-      }
+    if (cat !== 'All') {
+      this._router.navigate(['/faq'], { queryParams: { category: cat } });
+    } else {
+      this._router.navigate(['/faq']);
     }
   }
 }
-

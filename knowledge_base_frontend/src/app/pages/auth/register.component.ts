@@ -23,11 +23,14 @@ export class RegisterComponent {
   password = '';
   confirm = '';
   error: string | null = null;
-  constructor(private authService: AuthService) {}
+  constructor(authService: AuthService) {
+    this._authService = authService;
+  }
+  private _authService: AuthService;
   register() {
     this.error = null;
     if (this.password !== this.confirm) { this.error = 'Passwords do not match'; return; }
-    this.authService.register(this.email, this.password).subscribe({
+    this._authService.register(this.email, this.password).subscribe({
       next: () => {
         if (typeof globalThis !== 'undefined' && globalThis.location) {
           globalThis.location.pathname = '/';
