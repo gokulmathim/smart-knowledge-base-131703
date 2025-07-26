@@ -1,1 +1,3 @@
-# smart-knowledge-base-131703
+# Project Repository
+
+This is the initial README file for the project.
