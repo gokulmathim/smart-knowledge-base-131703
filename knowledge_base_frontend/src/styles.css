@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+body[data-theme='dark'] {
+  background: #23272f !important;
+  color: #ececec !important;
+}
+body[data-theme='dark'] .content, body[data-theme='dark'] .sidebar {
+  background: #262c38 !important;
+  color: #ececec !important;
+}
+body[data-theme='dark'] .navbar {
+  background: #212c41 !important;
+  color: #ffca28 !important;
+}
+body[data-theme='dark'] a {
+  color: #ffca28 !important;
+}
+body[data-theme='light'] {
+  background: #fff;
+  color: #222;
+}

@@ -1,0 +1,11 @@
+<aside class="sidebar-container">
+  <h3>Categories</h3>
+  <ul>
+    <li>
+      <a (click)="filterBy('All')" [style.fontWeight]="selected === 'All' ? 'bold' : 'normal'">All</a>
+    </li>
+    <li *ngFor="let cat of categories">
+      <a (click)="filterBy(cat)" [style.fontWeight]="selected === cat ? 'bold' : 'normal'">{{cat}}</a>
+    </li>
+  </ul>
+</aside>
